@@ -1,10 +1,10 @@
 import React from "react";
+import cn from 'classnames';
 import './styles.css';
 
-function Layout({head, content, children}){
-  console.log('Layout');
+function Layout({head, content, theme, children}){
   return (
-    <div className='Layout'>
+    <div className={cn('Layout', theme ? `Layout_${theme}` : '')}>
       <div className='Layout__head'>
         {head}
       </div>

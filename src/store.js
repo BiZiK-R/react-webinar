@@ -49,6 +49,7 @@ class Store {
   createItem() {
     const code = Math.max(0, ...this.state.items.map(item => item.code)) + 1;
     this.setState({
+      ...this.state,
       items: this.state.items.concat({
         code,
         title: 'Новая запись №'+code
@@ -62,6 +63,7 @@ class Store {
    */
   deleteItem(code) {
     this.setState({
+      ...this.state,
       items: this.state.items.filter(item => item.code !== code)
     });
   }
@@ -72,16 +74,65 @@ class Store {
    */
   selectItem(code) {
     this.setState({
+      ...this.state,
       items: this.state.items.map(item => {
         if (item.code === code){
           return {
             ...item,
-            selected: !item.selected
+            selected: !item.selected,
+            //counter: counterItem(item)
           };
         }
         return item;
       })
     });
+  }
+
+  /**
+   * Добавление товара в корзину по её коду
+   * @param item
+   */
+  addItemToCart(item) {
+    let coincidence = false;
+    const newCart = this.state.cart.map(cartItem => {
+      if(cartItem.code === item.code) {
+        cartItem.count++;
+        coincidence = true;
+      }
+      return cartItem;
+    })
+    if (!coincidence) {
+      newCart.push({...item, count: 1});
+    }
+    this.setState({
+      ...this.state,
+      cart: newCart,
+      
+    });
+  }
+
+  getTotalCartPrice() {
+    let totalPrice = 0;
+    this.state.cart.forEach(cartItem => {
+      totalPrice += cartItem.price * cartItem.count;
+    });
+    return totalPrice;
+  }
+
+  getTotalCartCount() {
+    let totalCount = 0;
+    this.state.cart.forEach(cartItem => {
+      totalCount += cartItem.count;
+    });
+    return totalCount;
+  }
+
+  counterItem(item) {
+    if (!item.selected) {
+      if (typeof(item.counter) === 'undefined') item.counter = 0;
+      item.counter++;
+    }
+    return item.counter;
   }
 }
 

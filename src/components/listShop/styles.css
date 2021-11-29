@@ -1,0 +1,8 @@
+/*Список*/
+.ListShop__item{
+    border-bottom: 1px dashed #ccc;
+}
+
+.ListShop__item:first-child{
+    border-top: 1px dashed #ccc;
+}

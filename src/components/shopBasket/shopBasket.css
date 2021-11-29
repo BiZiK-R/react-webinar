@@ -1,0 +1,10 @@
+.ShopBasket{
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+}
+
+.ShopBasket__cartStatus{
+    font-weight: bold;
+    padding: 0 13px 0 13px;
+}
