@@ -24,4 +24,4 @@ function ShopBasketModal({display, onDisplay, items, totalCount, totalPrice}) {
     )
 }
 
-export default ShopBasketModal;
+export default React.memo(ShopBasketModal);

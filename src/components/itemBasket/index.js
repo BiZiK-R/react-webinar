@@ -3,7 +3,7 @@ import propTypes from 'prop-types';
 import './itemBasket.css';
 
 function ItemBasket({item}){
-  console.log('Item ' + item.title)
+  //console.log('Item ' + item.title)
   return (
     <div className={'ItemBasket'}>
       <div className='ItemBasket__number'>{item.code}</div>

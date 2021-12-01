@@ -96,8 +96,11 @@ class Store {
     let coincidence = false;
     const newCart = this.state.cart.map(cartItem => {
       if(cartItem.code === item.code) {
-        cartItem.count++;
         coincidence = true;
+        return ({
+          ...cartItem,
+          count: cartItem.count + 1,
+        })
       }
       return cartItem;
     })
