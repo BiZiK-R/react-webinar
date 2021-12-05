@@ -1,16 +1,16 @@
 import React from 'react';
-import ItemBasket from '../itemBasket';
+import ItemBasket from '../item-basket';
 import './listBasket.css';
 
 function ListBasket({items}) {
 
     return(
-        <div className='ListBasket'>{items.map(item =>
-            <div className='ListBasket__item' key={item.code}>
+        <ul className='ListBasket'>{items.map(item =>
+            <li className='ListBasket__item' key={item.code}>
               <ItemBasket item={item}/>
-            </div>
+            </li>
           )}
-        </div>
+        </ul>
     )
 }
 
