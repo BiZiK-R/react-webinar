@@ -5,12 +5,12 @@ import './styles.css';
 
 function ListShop({items, onAddToCart}){
   return (
-    <div className='ListShop'>{items.map(item =>
-      <div className='ListShop__item' key={item.code}>
+    <ul className='ListShop'>{items.map(item =>
+      <li className='ListShop__item' key={item.code}>
         <Item item={item} onAddToCart={onAddToCart}/>
-      </div>
+      </li>
     )}
-    </div>
+    </ul>
   )
 }
 

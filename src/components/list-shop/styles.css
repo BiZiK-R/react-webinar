@@ -1,5 +1,11 @@
 /*Список*/
+.ListShop {
+    margin: 0;
+    padding-left: 0;
+}
+
 .ListShop__item{
+    list-style-type: none;
     border-bottom: 1px dashed #ccc;
 }
 

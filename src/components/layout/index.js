@@ -5,9 +5,9 @@ import './styles.css';
 function Layout({head, content, theme, children}){
   return (
     <div className={cn('Layout', theme ? `Layout_${theme}` : '')}>
-      <div className='Layout__head'>
+      <header className='Layout__head'>
         {head}
-      </div>
+      </header>
       <div className='Layout__center'>
         {content || children}
       </div>
