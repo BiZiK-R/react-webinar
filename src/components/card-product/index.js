@@ -9,8 +9,6 @@ function CardProduct({onAdd}) {
 
   const {idProduct} = useParams();
 
-  console.log(idProduct);
-
   const select = useSelector(state => ({
     product: state.product.item,
   }));
@@ -28,7 +26,6 @@ function CardProduct({onAdd}) {
 
   const store = useStore();
 
-  console.log(select.product);
 
   const View = !select.product ? 'Загрузка' : (
     <>
