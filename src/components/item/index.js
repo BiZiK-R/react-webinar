@@ -4,25 +4,28 @@ import './styles.css';
 import numberFormat from "../../utils/number-format";
 
 function Item({item, onAdd}) {
+
   return (
-    <div className='Item'>
-      <div className='Item__number'>{item._key}</div>
-      <div className='Item__title'>{item.title}</div>
-      <div className='Item__right'>
-        <div className='Item__price'>{numberFormat(item.price)} ₽</div>
-        <button onClick={() => onAdd(item._id)}>Добавить</button>
+      <div className='Item'>
+        <div className='Item__number'>{item._key}</div>
+        <div className='Item__title'>{item.title}</div>
+        <div className='Item__right'>
+          <div className='Item__price'>{numberFormat(item.price)} ₽</div>
+          <button onClick={(e) => {e.preventDefault(); onAdd(item._id);}}>Добавить</button>
+        </div>
       </div>
-    </div>
   )
 }
 
 Item.propTypes = {
   item: propTypes.object.isRequired,
   onAdd: propTypes.func,
+  onSelectProduct: propTypes.func,
 }
 
 Item.defaultProps = {
-  onAdd: () => {}
+  onAdd: () => {},
+  onSelectProduct: () => {}
 }
 
 export default React.memo(Item);

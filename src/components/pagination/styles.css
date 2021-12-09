@@ -1,0 +1,26 @@
+.Pagination {
+  margin: 0; /* Обнуление стилей ul */
+  padding: 0;
+
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 24px;
+  margin-top: 21px;
+}
+
+.Pagination__item {
+  text-align: center;
+  list-style-type: none;
+  min-width: 15px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.Pagination__item:hover {
+  background: #E1E1E1;
+}
+
+.Pagination__item_select {
+  color: #FFFFFF;
+  background: #000000;
+}

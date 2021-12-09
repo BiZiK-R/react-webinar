@@ -5,6 +5,7 @@ import LayoutModal from "../../components/layout-modal";
 import ItemBasket from "../../components/item-basket";
 import useSelector from "../../utils/use-selector";
 import useStore from "../../utils/use-store";
+import { Link } from "react-router-dom";
 
 function Basket(){
 
@@ -22,7 +23,9 @@ function Basket(){
 
   const renders = {
     itemBasket: useCallback(item => {
-      return <ItemBasket item={item}/>
+      return <Link to={`/${item._id}`} style={{ textDecoration: 'none', color: '#000000' }}>
+                <ItemBasket item={item}/>
+              </Link>
     }, [])
   }
 
