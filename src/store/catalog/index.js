@@ -10,33 +10,29 @@ class CatalogStore extends StoreModule {
       items: [],
       count: 0,
       limit: 10,
-      page: 2,
+      page: 0,
+      loading: false,
     };
   }
 
   /**
    * Загрузка списка товаров
    */
-  async load(){
-    const {limit, page} = this.getState();
-    const _apiPage = `/api/v1/articles?lang=ru&limit=${limit}&skip=${page*limit}&fields=items(*),count`
+  async load(selectPage){
+    const {limit} = this.getState();
+    this.setState({
+      ...this.getState(),
+      page: selectPage,
+      loading: true,
+    });
+    const _apiPage = `/api/v1/articles?lang=ru&limit=${limit}&skip=${selectPage*limit}&fields=items(*),count`
     const response = await fetch(_apiPage);
     const json = await response.json();
     this.setState({
+      ...this.getState(),
       items: json.result.items,
       count: json.result.count,
-      limit,
-      page,
-    });
-  }
-
-  setPage(selectPage) {
-    const {limit, page, items, count} = this.getState();
-    this.setState({
-      items,
-      count,
-      limit,
-      page: selectPage,
+      loading: false,
     });
   }
 }

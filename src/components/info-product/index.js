@@ -4,8 +4,6 @@ import './styles.css';
 
 function InfoProduct({onAdd, product}) {
 
-  console.log(product);
-
   const View = !product ? 'Загрузка' : (
     <>
       <p className="InfoProduct__description">{product.desciption}</p>
