@@ -1,13 +1,12 @@
 import React from "react";
-import cn from 'classnames';
 import './styles.css';
 
 function Layout({head, content, children}){
   return (
-    <div className={cn('Layout', theme ? `Layout_${theme}` : '')}>
-      <header className='Layout__head'>
+    <div className='Layout'>
+      <div className='Layout__head'>
         {head}
-      </header>
+      </div>
       <div className='Layout__center'>
         {content || children}
       </div>
