@@ -18,14 +18,15 @@ class CatalogStore extends StoreModule {
   /**
    * Загрузка списка товаров
    */
-  async load(selectPage){
-    const {limit} = this.getState();
+  async load(selectPage, selectLimit){
     this.setState({
       ...this.getState(),
+      limit: selectLimit,
       page: selectPage,
       loading: true,
     });
-    const _apiPage = `/api/v1/articles?lang=ru&limit=${limit}&skip=${selectPage*limit}&fields=items(*),count`
+    const {page, limit} = this.getState();
+    const _apiPage = `/api/v1/articles?lang=ru&limit=${limit}&skip=${page*limit}&fields=items(*),count`
     const response = await fetch(_apiPage);
     const json = await response.json();
     this.setState({

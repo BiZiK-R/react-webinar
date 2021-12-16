@@ -11,7 +11,7 @@ import useSelector from "../../utils/use-selector";
 function Main() {
 
   const [selectPage, setSelectPage] = useState(0);
-  const limit = 10;
+  const [limit, setLimit] = useState(0);
 
   const select = useSelector(state => ({
     items: state.catalog.items,
@@ -24,7 +24,7 @@ function Main() {
 
   // Загрузка тестовых данных при первом рендере
   useEffect(async () => {
-    await store.catalog.load(selectPage);
+    await store.catalog.load(selectPage, limit);
   }, [selectPage]);
 
 
