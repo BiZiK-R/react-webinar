@@ -34,8 +34,6 @@ function CardProduct() {
     };
   }, []);
 
-  console.log('CardProduct: ', select.product)
-
   return (
       <Layout head={<h1>{select.product ? select.product.title : ''}</h1>}>
         <BasketSimple onOpen={callbacks.openModal} amount={select.amount} sum={select.sum}/>
