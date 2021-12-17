@@ -11,7 +11,7 @@ import useSelector from "../../utils/use-selector";
 function Main() {
 
   const [selectPage, setSelectPage] = useState(0);
-  const [limit, setLimit] = useState(0);
+  const [limit, setLimit] = useState(10);
 
   const select = useSelector(state => ({
     items: state.catalog.items,
@@ -27,7 +27,7 @@ function Main() {
     await store.catalog.load(selectPage, limit);
   }, [selectPage]);
 
-
+  console.log("render");
   const store = useStore();
 
   const callbacks = {
