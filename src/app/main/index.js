@@ -27,7 +27,6 @@ function Main() {
     await store.catalog.load(selectPage, limit);
   }, [selectPage]);
 
-  console.log("render");
   const store = useStore();
 
   const callbacks = {
