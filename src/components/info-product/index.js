@@ -6,7 +6,7 @@ function InfoProduct({onAdd, product}) {
 
   const View = !product ? 'Загрузка' : (
     <>
-      <p className="InfoProduct__description">{product.desciption}</p>
+      <p className="InfoProduct__description">{product.description}</p>
       <p>Страна производитель: <span className="InfoProduct__country">{product.maidIn.title} ({product.maidIn.code})</span></p>
       <p>Категория: <span className="InfoProduct__сategory">{product.category.title}</span></p>
       <p>Год выпуска: <span className="InfoProduct__edition">{product.edition}</span></p>
