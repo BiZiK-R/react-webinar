@@ -9,11 +9,15 @@ function Select(props){
   const className = cn('Select');
 
   const onSelect = useCallback((e) => {
-    props.onChange(e.target.value);
+    props.onChange(e);
+  }, [props.onChange])
+
+  const onBlur = useCallback((e) => {
+    props.onBlur(e);
   }, [props.onChange])
 
   return (
-    <select className={className()} onChange={onSelect} value={props.value}>
+    <select name={props.name} className={className()} onChange={onSelect} onBlur={onBlur} value={props.value}>
       {props.options.map(item => (
         <option key={item.value} value={item.value}>{item.title}</option>
       ))}
@@ -24,12 +28,14 @@ function Select(props){
 Select.propTypes = {
   options: propTypes.arrayOf(propTypes.object).isRequired,
   value: propTypes.any,
-  onChange: propTypes.func
+  onChange: propTypes.func,
+  name: propTypes.string,
 }
 
 Select.defaultProps = {
   onChange: () => {
-  }
+  },
+  onBlur: () => {},
 }
 
 export default React.memo(Select);
