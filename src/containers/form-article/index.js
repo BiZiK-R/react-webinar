@@ -8,13 +8,13 @@ import Select from '../../components/select';
 import * as yup from 'yup';
 import propTypes from "prop-types";
 
-function FormArticle({data, onSubmit}){
+function FormArticle({errorRes, data, onSubmit}){
   const validationSchema = yup.object().shape({
     title: yup.string().max(100, 'Не больше 100 символов').required('Обязательно к заполнению'),
     description: yup.string(),
     maidIn: yup.string().required('Обязательно к заполнению'),
     category: yup.string().required('Обязательно к заполнению'),
-    edition: yup.number('Должно быть числом').max(2022, 'Мы не из будущего)').positive('Год должно быть положительным числом').integer('Год должно быть целым числом').required('Обязательно к заполнению'),
+    edition: yup.number('Должно быть числом').max(2022, 'Год не должен привышать нынешний').positive('Год должно быть положительным числом').integer('Год должно быть целым числом').required('Обязательно к заполнению'),
     price: yup.number('Должно быть числом').required('Обязательно к заполнению'),
   })
 
@@ -123,6 +123,7 @@ function FormArticle({data, onSubmit}){
               </form>
             )}
       </Formik>
+      <div>{errorRes}</div>
     </div>
   )
 }

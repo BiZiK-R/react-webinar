@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useState} from "react";
 import Layout from "../../components/layout";
 import useStore from "../../utils/use-store";
 import useSelector from "../../utils/use-selector";
@@ -13,6 +13,8 @@ function ArticleEdit() {
   const store = useStore();
   // Параметры из пути
   const params = useParams();
+
+  const [errorRes, setErrorRes] = useState('');
 
   // Начальная загрузка
   useInit(async () => {
@@ -51,9 +53,8 @@ function ArticleEdit() {
         body: JSON.stringify(data)
       });
       const json2 = await res.json();
-      console.log(json2);
     } catch(e) {
-      console.log(e);
+      setErrorRes('Что-то пошло не так');
     }
   }
 
@@ -67,7 +68,7 @@ function ArticleEdit() {
       <Header/>
 
       <Spinner active={select.waitingArticle || select.waitingCategory || select.waitingCountry}>
-        <FormArticle data={select.article} onSubmit={onSubmit} />
+        <FormArticle errorRes={errorRes} data={select.article} onSubmit={onSubmit} />
       </Spinner>
     </Layout>
   );
