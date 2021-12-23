@@ -11,11 +11,11 @@ import propTypes from "prop-types";
 function FormArticle({errorRes, data, onSubmit}){
   const validationSchema = yup.object().shape({
     title: yup.string().max(100, 'Не больше 100 символов').required('Обязательно к заполнению'),
-    description: yup.string(),
+    description: yup.string().max(1500, 'Описание не должно превышать 1500 символов'),
     maidIn: yup.string().required('Обязательно к заполнению'),
     category: yup.string().required('Обязательно к заполнению'),
     edition: yup.number('Должно быть числом').max(2022, 'Год не должен привышать нынешний').positive('Год должно быть положительным числом').integer('Год должно быть целым числом').required('Обязательно к заполнению'),
-    price: yup.number('Должно быть числом').required('Обязательно к заполнению'),
+    price: yup.number('Должно быть числом').positive('Цена должна быть положительным числом').required('Обязательно к заполнению'),
   })
 
   // CSS классы по БЭМ
