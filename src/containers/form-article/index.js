@@ -1,25 +1,31 @@
-import React, {useMemo} from 'react';
+import React, {useMemo, useState} from 'react';
 import {cn} from '@bem-react/classname'
 import useSelector from "../../utils/use-selector";
 import './styles.css';
 import WrapperTextFields from '../../components/wrapper-text-fields';
-import {Formik} from "formik";
 import Select from '../../components/select';
-import * as yup from 'yup';
 import propTypes from "prop-types";
 
 function FormArticle({errorRes, data, onSubmit}){
-  const validationSchema = yup.object().shape({
-    title: yup.string().max(100, 'Не больше 100 символов').required('Обязательно к заполнению'),
-    description: yup.string(),
-    maidIn: yup.string().required('Обязательно к заполнению'),
-    category: yup.string().required('Обязательно к заполнению'),
-    edition: yup.number('Должно быть числом').max(2022, 'Год не должен привышать нынешний').positive('Год должно быть положительным числом').integer('Год должно быть целым числом').required('Обязательно к заполнению'),
-    price: yup.number('Должно быть числом').required('Обязательно к заполнению'),
-  })
 
   // CSS классы по БЭМ
   const className = cn('EditCard');
+
+  const [values, setValues] = useState({
+    title: data.title,
+    description: data.description,
+    maidIn: data.maidIn ? data.maidIn._id : '',
+    category: data.category ? data.category._id : '',
+    edition: data.edition,
+    price: data.price,
+  });
+
+  const handleChange = (e) => {
+    setValues({
+      ...values,
+      [e.target.name]: e.target.value,
+    })
+  }
 
   const select = useSelector(state => ({
     category: state.category.items,
@@ -39,90 +45,60 @@ function FormArticle({errorRes, data, onSubmit}){
 
   return (
     <div className={className()}>
-      <Formik
-            initialValues={{
-              title: data.title,
-              description: data.description,
-              maidIn: data.maidIn ? data.maidIn._id : '',
-              category: data.category ? data.category._id : '',
-              edition: data.edition,
-              price: data.price,
-            }}
-            onSubmit={(values) => {
-              onSubmit(values)
-            }}
-            validationSchema={validationSchema}
-          >
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              isValid,
-              dirty
-              /* and other goodies */
-            }) => (
-              <form onSubmit={handleSubmit}>
-                <WrapperTextFields description='Название' error={errors.title && touched.title && errors.title}>
-                  <input
-                    type="text"
-                    name='title'
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.title}
-                  />
-                </WrapperTextFields>
-                <WrapperTextFields description='Описание' error={errors.description && touched.description && errors.description}>
-                  <textarea
-                    type="text"
-                    name='description'
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.description}
-                  />
-                </WrapperTextFields>
-                <WrapperTextFields description='Страна производитель' error={errors.maidIn && touched.maidIn && errors.maidIn}>
-                  <Select
-                    name='maidIn'
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.maidIn}
-                    options={options.country}
-                  />
-                </WrapperTextFields>
-                <WrapperTextFields description='Категория' error={errors.category && touched.category && errors.category}>
-                <Select
-                    name='category'
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.category}
-                    options={options.category}
-                  />
-                </WrapperTextFields>
-                <WrapperTextFields description='Год выпуска' error={errors.edition && touched.edition && errors.edition}>
-                  <input
-                    type="text"
-                    name='edition'
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.edition}
-                  />
-                </WrapperTextFields>
-                <WrapperTextFields description='Цена' error={errors.price && touched.price && errors.price}>
-                  <input
-                    type="text"
-                    name='price'
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.price}
-                  />
-                </WrapperTextFields>
-                <button disabled={!isValid || !dirty} type="submit">Сохранить</button>
-              </form>
-            )}
-      </Formik>
+      <form onSubmit={(e) => {e.preventDefault(); onSubmit(values)}}>
+        <WrapperTextFields description='Название'>
+          <input
+            required
+            type="text"
+            name='title'
+            onChange={handleChange}
+            value={values.title}
+          />
+        </WrapperTextFields>
+        <WrapperTextFields description='Описание'>
+          <textarea
+            type="text"
+            name='description'
+            onChange={handleChange}
+            value={values.description}
+          />
+        </WrapperTextFields>
+        <WrapperTextFields description='Страна производитель'>
+          <Select
+            name='maidIn'
+            onChange={handleChange}
+            value={values.maidIn}
+            options={options.country}
+          />
+        </WrapperTextFields>
+        <WrapperTextFields description='Категория'>
+        <Select
+            name='category'
+            onChange={handleChange}
+            value={values.category}
+            options={options.category}
+          />
+        </WrapperTextFields>
+        <WrapperTextFields description='Год выпуска'>
+          <input
+            required
+            type="number"
+            name='edition'
+            onChange={handleChange}
+            value={values.edition}
+          />
+        </WrapperTextFields>
+        <WrapperTextFields description='Цена'>
+          <input
+            required
+            type="number"
+            name='price'
+            onChange={handleChange}
+            value={values.price}
+          />
+        </WrapperTextFields>
+        <button type="submit">Сохранить</button>
+      </form>
       <div>{errorRes}</div>
     </div>
   )

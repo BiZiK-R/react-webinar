@@ -21,6 +21,12 @@ function WrapperTextFields(props){
 
 WrapperTextFields.propTypes = {
   description: propTypes.string,
+  error: propTypes.string,
+}
+
+WrapperTextFields.defaultProps = {
+  description: '',
+  error: '',
 }
 
 export default React.memo(WrapperTextFields);

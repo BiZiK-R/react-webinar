@@ -5,6 +5,7 @@ import Spinner from "../../components/spinner";
 import List from "../../components/list";
 import Pagination from "../../components/pagination";
 import Item from "../../components/item";
+import {Link} from "react-router-dom";
 
 function CatalogList() {
 
@@ -34,6 +35,7 @@ function CatalogList() {
       <Spinner active={select.waiting}>
         <List items={select.items} renderItem={renders.item}/>
       </Spinner>
+      <Link to='/articles/create'><button>Создать товар</button></Link>
       <Pagination
         count={select.count}
         page={select.page}
