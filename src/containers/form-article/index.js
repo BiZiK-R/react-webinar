@@ -3,14 +3,15 @@ import useSelector from "../../utils/use-selector";
 import useStore from "../../utils/use-store";
 import WrapperTextFields from '../../components/wrapper-text-fields';
 import Select from '../../components/select';
+import Input from '../../components/input';
 import propTypes from "prop-types";
 
 function FormArticle({onSubmit}){
 
   const store = useStore();
 
-  const handleChange = (e) => {
-    store.formArticle.update(e.target.name, e.target.value);
+  const handleChange = (value, name) => {
+    store.formArticle.update(name, value);
   }
 
   const select = useSelector(state => ({
@@ -35,7 +36,7 @@ function FormArticle({onSubmit}){
     <>
       <form onSubmit={(e) => {e.preventDefault(); onSubmit()}}>
         <WrapperTextFields description='Название' error={select.errors.title}>
-          <input
+          <Input
             required
             type="text"
             name='title'
@@ -68,21 +69,21 @@ function FormArticle({onSubmit}){
           />
         </WrapperTextFields>
         <WrapperTextFields description='Год выпуска' error={select.errors.edition}>
-          <input
+          <Input
             required
-            type="number"
+            type="text"
             name='edition'
             onChange={handleChange}
-            value={select.data.edition}
+            value={String(select.data.edition)}
           />
         </WrapperTextFields>
         <WrapperTextFields description='Цена' error={select.errors.price}>
-          <input
+          <Input
             required
-            type="number"
+            type="text"
             name='price'
             onChange={handleChange}
-            value={select.data.price}
+            value={String(select.data.price)}
           />
         </WrapperTextFields>
         <button type="submit">Сохранить</button>
