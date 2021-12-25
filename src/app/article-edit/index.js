@@ -14,10 +14,9 @@ function ArticleEdit() {
   const store = useStore();
   // Параметры из пути
   const params = useParams();
-  const navigate = useNavigate();
 
   // Начальная загрузка
-  useEffect(() => {
+  useInit(() => {
     store.get('article').load(params.id);
     store.category.load();
     store.country.load();
