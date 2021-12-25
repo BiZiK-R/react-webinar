@@ -87,10 +87,24 @@ class Store {
   }
 
   /**
-   * @return {ProductStore}
+   * @return {CategoryStore}
    */
-   get product(){
-    return this.get('product');
+   get category(){
+    return this.get('category');
+  }
+
+  /**
+   * @return {CountryStore}
+   */
+   get country(){
+    return this.get('country');
+  }
+
+  /**
+   * @return {FormArticleStore}
+   */
+   get formArticle(){
+    return this.get('formArticle');
   }
 }
 

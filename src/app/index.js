@@ -1,9 +1,11 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import {Routes, Route} from "react-router-dom";
 import Main from "./main";
 import Basket from "./basket";
 import useSelector from "../utils/use-selector";
-import CardProduct from './card-product';
+import Article from "./article";
+import ArticleEdit from './article-edit';
+import ArticleCreate from './article-create';
 
 /**
  * Приложение
@@ -15,13 +17,15 @@ function App() {
   }));
 
   return (
-    <Router>
-      {select.name === 'basket' && <Basket/>}
+    <>
       <Routes>
-        <Route path="/" exact element={<Main/>}/>
-        <Route path="/:idProduct" element={<CardProduct/>}/>
+        <Route path={''} element={<Main/>}/>
+        <Route path={"/articles/:id"} element={<Article/>}/>
+        <Route path={"/articles/edit/:id"} element={<ArticleEdit/>} />
+        <Route path={'/articles/create'} element={<ArticleCreate />} />
       </Routes>
-    </Router>
+      {select.name === 'basket' && <Basket/>}
+    </>
   );
 }
 

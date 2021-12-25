@@ -1,26 +1,30 @@
-.Pagination {
-  margin: 0; /* Обнуление стилей ul */
-  padding: 0;
-
+.Pagination{
   display: flex;
+  list-style: none;
   justify-content: flex-end;
-  margin-right: 24px;
-  margin-top: 21px;
+  padding: 20px;
+  font-size: 18px;
 }
 
-.Pagination__item {
-  text-align: center;
-  list-style-type: none;
-  min-width: 15px;
-  height: 20px;
+.Pagination-item{
+  display: block;
+  padding: 2px 4px 3px 2px;
+  margin: 0 2px;
   cursor: pointer;
 }
 
-.Pagination__item:hover {
+.Pagination-item:hover{
   background: #E1E1E1;
 }
 
-.Pagination__item_select {
-  color: #FFFFFF;
-  background: #000000;
+.Pagination-item_active,
+.Pagination-item_active:hover{
+  background: #000;
+  color: #fff;
+}
+
+.Pagination-item_split,
+.Pagination-item_split:hover{
+  background: transparent;
+  cursor: default;
 }

@@ -1,60 +1,27 @@
-import React, {useCallback, useEffect, useState} from "react";
-import { Link } from "react-router-dom";
-import Item from "../../components/item";
+import React from "react";
 import Layout from "../../components/layout";
-import BasketSimple from "../../components/basket-simple";
-import List from "../../components/list";
-import Pagination from "../../components/pagination";
 import useStore from "../../utils/use-store";
-import useSelector from "../../utils/use-selector";
+import Header from "../../containers/header";
+import CatalogFilter from "../../containers/catalog-filter";
+import CatalogList from "../../containers/catalog-list";
+import useInit from "../../utils/use-init";
 
 function Main() {
 
-  const [selectPage, setSelectPage] = useState(0);
-  const [limit, setLimit] = useState(10);
-
-  const select = useSelector(state => ({
-    items: state.catalog.items,
-    count: state.catalog.count,
-    page: state.catalog.page,
-    loading: state.catalog.loading,
-    amount: state.basket.amount,
-    sum: state.basket.sum,
-  }));
-
-  // Загрузка тестовых данных при первом рендере
-  useEffect(async () => {
-    await store.catalog.load(selectPage, limit);
-  }, [selectPage]);
-
   const store = useStore();
 
-  const callbacks = {
-    addToBasket: useCallback((_id) => store.basket.add(_id), [store]),
-    openModal: useCallback(() => store.modals.open('basket'), [store]),
-  }
-
-  const renders = {
-    item: useCallback(item => {
-      return <Link to={`/${item._id}`} style={{ textDecoration: 'none', color: '#000000' }}>
-                <Item item={item} onAdd={callbacks.addToBasket}/>
-             </Link>
-    }, [callbacks.addToBasket]),
-  }
-
-  const onSelectPag = (e) => {
-    setSelectPage(e.target.value);
-  }
+  // Загрузка тестовых данных при первом рендере
+  useInit(async () => {
+    await store.catalog.initParams();
+    await store.category.load();
+  }, [], {backForward: true});
 
   return (
-      <Layout head={<h1>Магазин</h1>}>
-        <BasketSimple onOpen={callbacks.openModal} amount={select.amount} sum={select.sum}/>
-        {select.loading ? 'Загрузка' : <>
-          <List items={select.items} renderItem={renders.item}/>
-          <Pagination numberOfPages={select.count / limit} selectPage={select.page} onSelect={onSelectPag} />
-        </>}
-
-      </Layout>
+    <Layout head={<h1>Магазин</h1>}>
+      <Header/>
+      <CatalogFilter/>
+      <CatalogList/>
+    </Layout>
   );
 }
 
