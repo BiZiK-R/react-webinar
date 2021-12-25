@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from "react";
+import React, {useEffect} from "react";
 import Layout from "../../components/layout";
 import useStore from "../../utils/use-store";
 import useSelector from "../../utils/use-selector";
@@ -7,6 +7,7 @@ import Spinner from "../../components/spinner";
 import Header from "../../containers/header";
 import useInit from "../../utils/use-init";
 import FormArticle from "../../containers/form-article";
+import WrapperContent from "../../components/wrapper-content";
 
 function ArticleEdit() {
 
@@ -15,73 +16,40 @@ function ArticleEdit() {
   const params = useParams();
   const navigate = useNavigate();
 
-  const [errorRes, setErrorRes] = useState('');
-
   // Начальная загрузка
-  useInit(async () => {
-    await store.get('article').load(params.id);
-    await store.category.load();
-    await store.country.load();
+  useEffect(() => {
+    store.get('article').load(params.id);
+    store.category.load();
+    store.country.load();
   }, [params.id]);
-
 
   const select = useSelector(state => ({
     waitingArticle: state.article.waiting,
     waitingCategory: state.category.waiting,
     waitingCountry: state.country.waiting,
+    waitingForm: state.formArticle.waiting,
     article: state.article.data,
   }));
 
-  const onSubmit = async (values) => {
-    const data = {
-      title: values.title,
-      description: values.description,
-      maidIn: {
-        _id: values.maidIn,
-      },
-      category: {
-        _id: values.category,
-      },
-      edition: values.edition,
-      price: values.price,
-    }
-    try {
-      const res = await fetch(`/api/v1/articles/${params.id}`,{
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
-      const json = await res.json();
-      if (json.error) {
-        setErrorRes(json.error.message);
-      }
-      store.get('article').load(params.id);
-    } catch(e) {
-      setErrorRes('Что-то пошло не так');
-    }
+  useEffect(() => {
+    store.formArticle.initData({
+      title: select.article.title ? select.article.title : '',
+      description: select.article.description ? select.article.description : '',
+      maidIn: select.article.maidIn ? select.article.maidIn._id : '',
+      category: select.article.category ? select.article.category._id : '',
+      edition: select.article.edition ? select.article.edition : '',
+      price: select.article.price ? select.article.price : '',
+      id: select.article._id ? select.article._id : '',
+    });
+  }, [select.article]);
+
+  const onSubmit = async () => {
+    await store.formArticle.put();
+    await store.get('article').load(params.id);
   }
 
-  const onDelete = async () => {
-    try {
-      const res = await fetch(`/api/v1/articles/${params.id}`,{
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({_id: params.id})
-      });
-      const json = await res.json();
-      if (json.error) {
-        setErrorRes(json.error.message);
-      } else {
-        navigate('/');
-        alert('Товар удалён');
-      }
-    } catch(e) {
-      setErrorRes('Что-то пошло не так');
-    }
+  const onDelete = () => {
+    store.formArticle.del();
   }
 
   return (
@@ -89,9 +57,11 @@ function ArticleEdit() {
 
       <Header/>
 
-      <Spinner active={select.waitingArticle || select.waitingCategory || select.waitingCountry}>
-        <FormArticle errorRes={errorRes} data={select.article} onSubmit={onSubmit} />
-        <button type="button" onClick={onDelete}>Удалить товар</button>
+      <Spinner active={select.waitingArticle || select.waitingCategory || select.waitingCountry || select.waitingForm}>
+        <WrapperContent>
+          <FormArticle onSubmit={onSubmit} />
+          <button type="button" onClick={onDelete}>Удалить товар</button>
+        </WrapperContent>
       </Spinner>
     </Layout>
   );

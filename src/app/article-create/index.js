@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useState, useEffect} from "react";
 import Layout from "../../components/layout";
 import useStore from "../../utils/use-store";
 import useSelector from "../../utils/use-selector";
@@ -7,6 +7,7 @@ import Spinner from "../../components/spinner";
 import Header from "../../containers/header";
 import useInit from "../../utils/use-init";
 import FormArticle from "../../containers/form-article";
+import WrapperContent from "../../components/wrapper-content";
 
 function ArticleCreate() {
 
@@ -18,51 +19,33 @@ function ArticleCreate() {
   const [errorRes, setErrorRes] = useState('');
 
   // Начальная загрузка
-  useInit(async () => {
-    await store.category.load();
-    await store.country.load();
+  useEffect(() => {
+    store.category.load();
+    store.country.load();
   }, []);
 
 
   const select = useSelector(state => ({
     waitingCategory: state.category.waiting,
     waitingCountry: state.country.waiting,
+    waitingForm: state.formArticle.waiting,
     article: state.article.data,
   }));
 
-  const onSubmit = async (values) => {
-    const data = {
-      title: values.title,
-      name: values.title,
-      description: values.description,
-      maidIn: {
-        _id: values.maidIn,
-      },
-      category: {
-        _id: values.category,
-      },
-      edition: values.edition,
-      price: values.price,
-      _key: Date.now(),
-    }
-    try {
-      const res = await fetch(`/api/v1/articles`,{
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
-      const json = await res.json();
-      if (json.error) {
-        setErrorRes(json.error.message);
-      }
-      else {
-        navigate(`/articles/${json.result._id}`);
-      }
-    } catch(e) {
-      setErrorRes('Что-то пошло не так');
-    }
+  useEffect(() => {
+    store.formArticle.initData({
+      title: '',
+      description: '',
+      maidIn: '',
+      category: '',
+      edition: '',
+      price: '',
+      id: '',
+    });
+  }, [select.article]);
+
+  const onSubmit = async () => {
+    store.formArticle.post();
   }
 
   return (
@@ -70,8 +53,10 @@ function ArticleCreate() {
 
       <Header/>
 
-      <Spinner active={select.waitingArticle || select.waitingCategory || select.waitingCountry}>
-        <FormArticle errorRes={errorRes} onSubmit={onSubmit} />
+      <Spinner active={select.waitingCategory || select.waitingCountry || select.waitingForm}>
+        <WrapperContent>
+          <FormArticle onSubmit={onSubmit} />
+        </WrapperContent>
       </Spinner>
     </Layout>
   );

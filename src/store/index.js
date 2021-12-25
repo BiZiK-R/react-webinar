@@ -99,6 +99,13 @@ class Store {
    get country(){
     return this.get('country');
   }
+
+  /**
+   * @return {FormArticleStore}
+   */
+   get formArticle(){
+    return this.get('formArticle');
+  }
 }
 
 export default Store;

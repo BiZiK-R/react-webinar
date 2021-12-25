@@ -15,8 +15,8 @@ function Article() {
   const params = useParams();
 
   // Начальная загрузка
-  useInit(async () => {
-    await store.get('article').load(params.id);
+  useInit(() => {
+    store.get('article').load(params.id);
   }, [params.id]);
 
   const select = useSelector(state => ({

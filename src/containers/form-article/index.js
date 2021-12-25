@@ -1,35 +1,23 @@
-import React, {useMemo, useState} from 'react';
-import {cn} from '@bem-react/classname'
+import React, {useMemo} from 'react';
 import useSelector from "../../utils/use-selector";
-import './styles.css';
+import useStore from "../../utils/use-store";
 import WrapperTextFields from '../../components/wrapper-text-fields';
 import Select from '../../components/select';
 import propTypes from "prop-types";
 
-function FormArticle({errorRes, data, onSubmit}){
+function FormArticle({onSubmit}){
 
-  // CSS классы по БЭМ
-  const className = cn('EditCard');
-
-  const [values, setValues] = useState({
-    title: data.title,
-    description: data.description,
-    maidIn: data.maidIn ? data.maidIn._id : '',
-    category: data.category ? data.category._id : '',
-    edition: data.edition,
-    price: data.price,
-  });
+  const store = useStore();
 
   const handleChange = (e) => {
-    setValues({
-      ...values,
-      [e.target.name]: e.target.value,
-    })
+    store.formArticle.update(e.target.name, e.target.value);
   }
 
   const select = useSelector(state => ({
     category: state.category.items,
     country: state.country.items,
+    data: state.formArticle.data,
+    errors: state.formArticle.errors,
   }));
 
   const options = {
@@ -39,89 +27,76 @@ function FormArticle({errorRes, data, onSubmit}){
     }, [select.category]),
     country: useMemo(() => {
       const country = select.country.map(item => ({value: item._id, title: item.title}));
-      return [].concat(country)
+      return [{value: '', title: 'Не выбрано'}].concat(country)
     }, [select.country]),
   }
 
   return (
-    <div className={className()}>
-      <form onSubmit={(e) => {e.preventDefault(); onSubmit(values)}}>
-        <WrapperTextFields description='Название'>
+    <>
+      <form onSubmit={(e) => {e.preventDefault(); onSubmit()}}>
+        <WrapperTextFields description='Название' error={select.errors.title}>
           <input
             required
             type="text"
             name='title'
             onChange={handleChange}
-            value={values.title}
+            value={select.data.title}
           />
         </WrapperTextFields>
-        <WrapperTextFields description='Описание'>
+        <WrapperTextFields description='Описание' error={select.errors.description}>
           <textarea
             type="text"
             name='description'
             onChange={handleChange}
-            value={values.description}
+            value={select.data.description}
           />
         </WrapperTextFields>
-        <WrapperTextFields description='Страна производитель'>
+        <WrapperTextFields description='Страна производитель' error={select.errors.maidIn}>
           <Select
             name='maidIn'
             onChange={handleChange}
-            value={values.maidIn}
+            value={select.data.maidIn}
             options={options.country}
           />
         </WrapperTextFields>
-        <WrapperTextFields description='Категория'>
+        <WrapperTextFields description='Категория' error={select.errors.category}>
         <Select
             name='category'
             onChange={handleChange}
-            value={values.category}
+            value={select.data.category}
             options={options.category}
           />
         </WrapperTextFields>
-        <WrapperTextFields description='Год выпуска'>
+        <WrapperTextFields description='Год выпуска' error={select.errors.edition}>
           <input
             required
             type="number"
             name='edition'
             onChange={handleChange}
-            value={values.edition}
+            value={select.data.edition}
           />
         </WrapperTextFields>
-        <WrapperTextFields description='Цена'>
+        <WrapperTextFields description='Цена' error={select.errors.price}>
           <input
             required
             type="number"
             name='price'
             onChange={handleChange}
-            value={values.price}
+            value={select.data.price}
           />
         </WrapperTextFields>
         <button type="submit">Сохранить</button>
       </form>
-      <div>{errorRes}</div>
-    </div>
+      <div>{select.errors.message}</div>
+    </>
   )
 }
 
 FormArticle.propTypes = {
-  data: propTypes.object,
   onSubmit: propTypes.func,
 }
 
 FormArticle.defaultProps = {
-  data: {
-    title: '',
-    description: '',
-    maidIn: {
-      _id: ''
-    },
-    category: {
-      _id: ''
-    },
-    edition: '',
-    price: '',
-  },
   onSubmit: () => {},
 }
 
