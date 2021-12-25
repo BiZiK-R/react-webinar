@@ -71,19 +71,19 @@ function FormArticle({onSubmit}){
         <WrapperTextFields description='Год выпуска' error={select.errors.edition}>
           <Input
             required
-            type="text"
+            type="number"
             name='edition'
             onChange={handleChange}
-            value={String(select.data.edition)}
+            value={select.data.edition}
           />
         </WrapperTextFields>
         <WrapperTextFields description='Цена' error={select.errors.price}>
           <Input
             required
-            type="text"
+            type="number"
             name='price'
             onChange={handleChange}
-            value={String(select.data.price)}
+            value={select.data.price}
           />
         </WrapperTextFields>
         <button type="submit">Сохранить</button>
