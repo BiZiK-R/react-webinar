@@ -10,12 +10,12 @@ function Input(props) {
   const [value, change] = useState(props.value);
 
   // Задержка для вызова props.onChange
-  const changeThrottle = useCallback(throttle(value => props.onChange(value), 1000), [props.onChange]);
+  const changeThrottle = useCallback(throttle((value, name) => props.onChange(value, name), 1000), [props.onChange]);
 
   // Обработчик изменений в поле
   const onChange = useCallback(event => {
     change(event.target.value);
-    changeThrottle(event.target.value);
+    changeThrottle(event.target.value, event.target.name);
   }, [change, changeThrottle]);
 
   // Обновление стейта, если передан новый value
@@ -33,6 +33,7 @@ function Input(props) {
       type={props.type}
       placeholder={props.placeholder}
       onChange={onChange}
+      name={props.name}
     />
   )
 }
