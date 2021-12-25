@@ -12,14 +12,9 @@ import WrapperContent from "../../components/wrapper-content";
 function ArticleCreate() {
 
   const store = useStore();
-  // Параметры из пути
-  const params = useParams();
-  const navigate = useNavigate();
-
-  const [errorRes, setErrorRes] = useState('');
 
   // Начальная загрузка
-  useEffect(() => {
+  useInit(() => {
     store.category.load();
     store.country.load();
   }, []);
