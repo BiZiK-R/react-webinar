@@ -39,11 +39,11 @@ function Input(props) {
 }
 
 Input.propTypes = {
-  type: propTypes.string,
   value: propTypes.oneOfType([
     propTypes.string,
     propTypes.number,
   ]),
+  type: propTypes.string,
   placeholder: propTypes.string,
   onChange: propTypes.func,
   theme: propTypes.string,
