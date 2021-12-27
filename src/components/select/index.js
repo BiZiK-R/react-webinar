@@ -9,7 +9,7 @@ function Select(props){
   const className = cn('Select');
 
   const onSelect = useCallback((e) => {
-    props.onChange(e);
+    props.onChange(e.target.value, e.target.name);
   }, [props.onChange])
 
   const onBlur = useCallback((e) => {

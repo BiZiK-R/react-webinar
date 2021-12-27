@@ -26,7 +26,15 @@ class FormArticleStore extends StoreModule {
     const state = this.getState();
     this.updateState({
       ...state,
-      data: data,
+      data: {
+        title: data.title ? data.title : '',
+        description: data.description ? data.description : '',
+        maidIn: data.maidIn ? data.maidIn._id : '',
+        category: data.category ? data.category._id : '',
+        edition: data.edition ? data.edition : '',
+        price: data.price ? data.price : '',
+        id: data._id ? data._id : '',
+      },
     });
   }
 

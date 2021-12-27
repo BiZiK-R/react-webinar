@@ -39,7 +39,11 @@ function Input(props) {
 }
 
 Input.propTypes = {
+<<<<<<< HEAD
   value: propTypes.any,
+=======
+  value: propTypes.string,
+>>>>>>> lecture-4
   type: propTypes.oneOfType([
     propTypes.string,
     propTypes.number,

@@ -2,7 +2,6 @@ import React, {useCallback, useState, useEffect} from "react";
 import Layout from "../../components/layout";
 import useStore from "../../utils/use-store";
 import useSelector from "../../utils/use-selector";
-import {useParams, useNavigate} from "react-router-dom";
 import Spinner from "../../components/spinner";
 import Header from "../../containers/header";
 import useInit from "../../utils/use-init";
@@ -21,26 +20,16 @@ function ArticleCreate() {
 
 
   const select = useSelector(state => ({
-    waitingCategory: state.category.waiting,
-    waitingCountry: state.country.waiting,
-    waitingForm: state.formArticle.waiting,
+    waiting: state.category.waiting || state.country.waiting || state.formArticle.waiting,
     article: state.article.data,
   }));
 
   useEffect(() => {
-    store.formArticle.initData({
-      title: '',
-      description: '',
-      maidIn: '',
-      category: '',
-      edition: '',
-      price: '',
-      id: '',
-    });
+    store.formArticle.initData({});
   }, [select.article]);
 
-  const onSubmit = async () => {
-    store.formArticle.post();
+  const callbacks = {
+    onPost: useCallback(() => store.formArticle.post(), [store]),
   }
 
   return (
@@ -48,9 +37,9 @@ function ArticleCreate() {
 
       <Header/>
 
-      <Spinner active={select.waitingCategory || select.waitingCountry || select.waitingForm}>
+      <Spinner active={select.waiting}>
         <WrapperContent>
-          <FormArticle onSubmit={onSubmit} />
+          <FormArticle onSubmit={callbacks.onPost} />
         </WrapperContent>
       </Spinner>
     </Layout>
