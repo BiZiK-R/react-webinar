@@ -50,7 +50,7 @@ function FormArticle({onSubmit}){
             name='description'
             onChange={(e) => handleChange(e.target.value, e.target.name)}
             value={select.data.description}
-            style={{width: "100%", height: "150px"}}
+            style={{width: "100%", height: "150px", fontSize: "16px"}}
           />
           {/* textarea должен быть по идеи отдельным компонентом, но я через 30 минут уже уезжаю, поэтому сделал как проще) */}
         </WrapperTextFields>
